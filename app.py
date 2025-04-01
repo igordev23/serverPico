@@ -43,7 +43,10 @@ def receber_mensagem():
 
 @app.route("/", methods=["GET"])
 def pagina_inicial():
-    return "<h1>Servidor está rodando!</h1>"
+    return "<h1>Servidor está rodando!</h1><p>Acesse <a href='/mensagem?msg'Aqui</a> para testar.</p>"
 
 PORT = int(os.environ.get("PORT", 5000))
 app.run(host="0.0.0.0", port=PORT)
+
+
+
