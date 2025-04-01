@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template_string
+from flask import Flask, request, jsonify, render_template_string
 
 app = Flask(__name__)
 
@@ -17,17 +17,34 @@ HTML_TEMPLATE = """
         .container { padding: 20px; border: 1px solid #ddd; display: inline-block; }
         .mensagem { background: #f4f4f4; padding: 10px; margin: 5px; border-radius: 5px; }
     </style>
+    <script>
+        function atualizarMensagens() {
+            fetch('/mensagens')
+                .then(response => response.json())
+                .then(data => {
+                    let mensagensDiv = document.getElementById('mensagens');
+                    mensagensDiv.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(msg => {
+                            let div = document.createElement('div');
+                            div.className = 'mensagem';
+                            div.textContent = msg;
+                            mensagensDiv.appendChild(div);
+                        });
+                    } else {
+                        mensagensDiv.innerHTML = '<p>Nenhuma mensagem recebida ainda.</p>';
+                    }
+                });
+        }
+        setInterval(atualizarMensagens, 100); // Atualiza a cada 0.1 segundo
+    </script>
 </head>
 <body>
     <div class="container">
         <h2>Mensagens Recebidas</h2>
-        {% if mensagens %}
-            {% for msg in mensagens %}
-                <div class="mensagem">{{ msg }}</div>
-            {% endfor %}
-        {% else %}
+        <div id="mensagens">
             <p>Nenhuma mensagem recebida ainda.</p>
-        {% endif %}
+        </div>
     </div>
 </body>
 </html>
@@ -36,17 +53,18 @@ HTML_TEMPLATE = """
 @app.route("/mensagem", methods=["GET"])
 def receber_mensagem():
     mensagem = request.args.get("msg")
-    if mensagem:  # Apenas adiciona se houver uma mensagem
+    if mensagem:
         mensagens.append(mensagem)
         print(f"Mensagem recebida: {mensagem}")
-    return render_template_string(HTML_TEMPLATE, mensagens=mensagens)
+    return "Mensagem recebida"
+
+@app.route("/mensagens", methods=["GET"])
+def listar_mensagens():
+    return jsonify(mensagens)
 
 @app.route("/", methods=["GET"])
 def pagina_inicial():
-    return "<h1>Servidor está rodando!</h1><p>Acesse <a href='/mensagem?msg'Aqui</a> para testar.</p>"
+    return render_template_string(HTML_TEMPLATE)
 
 PORT = int(os.environ.get("PORT", 5000))
 app.run(host="0.0.0.0", port=PORT)
-
-
-
