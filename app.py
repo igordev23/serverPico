@@ -16,6 +16,7 @@ HTML_TEMPLATE = """
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         .container { padding: 20px; border: 1px solid #ddd; display: inline-block; }
         .mensagem { background: #f4f4f4; padding: 10px; margin: 5px; border-radius: 5px; }
+        .botao { margin-top: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px; }
     </style>
     <script>
         function atualizarMensagens() {
@@ -36,7 +37,11 @@ HTML_TEMPLATE = """
                     }
                 });
         }
-        setInterval(atualizarMensagens, 100); // Atualiza a cada 0.1 segundo
+        function resetarMensagens() {
+            fetch('/reset', { method: 'POST' })
+                .then(() => atualizarMensagens());
+        }
+        setInterval(atualizarMensagens, 2000); // Atualiza a cada 2 segundos
     </script>
 </head>
 <body>
@@ -45,6 +50,7 @@ HTML_TEMPLATE = """
         <div id="mensagens">
             <p>Nenhuma mensagem recebida ainda.</p>
         </div>
+        <button class="botao" onclick="resetarMensagens()">Resetar Mensagens</button>
     </div>
 </body>
 </html>
@@ -61,6 +67,13 @@ def receber_mensagem():
 @app.route("/mensagens", methods=["GET"])
 def listar_mensagens():
     return jsonify(mensagens)
+
+@app.route("/reset", methods=["POST"])
+def resetar_mensagens():
+    global mensagens
+    mensagens = []
+    print("Mensagens resetadas.")
+    return "Mensagens resetadas"
 
 @app.route("/", methods=["GET"])
 def pagina_inicial():
