@@ -29,6 +29,10 @@ def receber_mensagem():
     mensagem = request.args.get("msg", "Nenhuma mensagem recebida")
     print(f"Mensagem recebida: {mensagem}")
     return render_template_string(HTML_TEMPLATE, mensagem=mensagem)
+@app.route("/", methods=["GET"])
+def pagina_inicial():
+    return "<h1>Servidor está rodando!</h1><p>Acesse <a href='/mensagem?msg=Hello'>/mensagem?msg=Hello</a> para testar.</p>"
+
 
 PORT = int(os.environ.get("PORT", 5000))
 app.run(host="0.0.0.0", port=PORT)
