@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -8,4 +9,6 @@ def receber_mensagem():
     print(f"Mensagem recebida: {mensagem}")
     return "Mensagem recebida", 200
 
-app.run(host="0.0.0.0", port=5000)
+# Pega a porta definida pelo Render (ou usa 5000 como fallback)
+PORT = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=PORT)
