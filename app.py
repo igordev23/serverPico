@@ -6,12 +6,7 @@ app = Flask(__name__)
 
 # Configurar para aceitar HTTP e não forçar HTTPS
 Talisman(app, force_https=False)
-# Configurar Talisman para permitir arquivos externos
-Talisman(app, content_security_policy={
-    'default-src': "'self'",
-    'style-src': "'self'",
-    'script-src': "'self'"
-})
+
 mensagens = []
 
 @app.route("/mensagem", methods=["GET"])
