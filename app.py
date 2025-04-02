@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, jsonify, render_template_string
+from urllib.parse import unquote
 
 app = Flask(__name__)
 
@@ -15,8 +16,8 @@ HTML_TEMPLATE = """
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         .container { padding: 20px; border: 1px solid #ddd; display: inline-block; }
-        .mensagem { background: #f4f4f4; padding: 10px; margin: 5px; border-radius: 5px; }
-        .botao { margin-top: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        .mensagem { background: #f4f4f4; padding: 10px; margin: 5px; border-radius: 5px; font-size: 18px; }
+        .botao { margin-top: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
     </style>
     <script>
         function atualizarMensagens() {
@@ -26,7 +27,7 @@ HTML_TEMPLATE = """
                     let mensagensDiv = document.getElementById('mensagens');
                     mensagensDiv.innerHTML = '';
                     if (data.length > 0) {
-                        data.forEach(msg => {
+                        data.reverse().forEach(msg => {
                             let div = document.createElement('div');
                             div.className = 'mensagem';
                             div.textContent = msg;
@@ -41,7 +42,7 @@ HTML_TEMPLATE = """
             fetch('/reset', { method: 'POST' })
                 .then(() => atualizarMensagens());
         }
-        setInterval(atualizarMensagens, 2000); // Atualiza a cada 2 segundos
+        setInterval(atualizarMensagens, 2000);
     </script>
 </head>
 <body>
@@ -60,8 +61,10 @@ HTML_TEMPLATE = """
 def receber_mensagem():
     mensagem = request.args.get("msg")
     if mensagem:
-        mensagens.append(mensagem)
-        print(f"Mensagem recebida: {mensagem}")
+        mensagem = unquote(mensagem)  # Decodifica caracteres especiais na URL
+        if len(mensagens) == 0 or mensagens[-1] != mensagem:  # Evita duplicatas consecutivas
+            mensagens.append(mensagem)
+            print(f"Mensagem recebida: {mensagem}")
     return "Mensagem recebida"
 
 @app.route("/mensagens", methods=["GET"])
