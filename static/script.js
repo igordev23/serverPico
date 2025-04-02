@@ -23,9 +23,18 @@ function atualizarBussola(direcao) {
     let angulo = angulos[direcao] || 0;
     document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(${angulo}deg)`;
 }
+function resetarBussola() {
+    document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(0deg)`;
+}
+
 
 function resetarMensagens() {
-    let angulos = { "Norte": 0}
+    fetch('/reset', { method: 'POST' })
+        .then(() => {
+            atualizarMensagens();
+            resetarBussola();
+        });
 }
+
 
 setInterval(atualizarMensagens, 2000); // Atualiza a cada 2 segundos
