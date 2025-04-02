@@ -4,8 +4,6 @@ from flask_talisman import Talisman
 
 app = Flask(__name__)
 
-# Configurar para aceitar HTTP e não forçar HTTPS
-Talisman(app, force_https=False)
 
 mensagens = []
 
