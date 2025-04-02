@@ -4,50 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rosa dos Ventos</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .container { padding: 20px; border: 1px solid #ddd; display: inline-block; }
-        .botao { margin-top: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px; }
-
-        /* Estilização da bússola */
-        .compass-container { position: relative; width: 200px; height: 200px; margin: auto; }
-        .compass-background { width: 100%; height: 100%; background: url('https://upload.wikimedia.org/wikipedia/commons/8/8b/Rosa_dos_ventos.png') no-repeat center; background-size: cover; }
-        .needle { position: absolute; top: 50%; left: 50%; width: 10px; height: 90px; background: red; transform-origin: bottom center; transition: transform 0.5s ease-in-out; }
-    </style>
-    <script>
-        function atualizarMensagens() {
-            fetch('/mensagens')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        let ultimaMensagem = data[data.length - 1]; // Pega a última mensagem
-                        atualizarBussola(ultimaMensagem);
-                    }
-                });
-        }
-
-        function atualizarBussola(direcao) {
-            let angulos = {
-                "Norte": 0,
-                "Nordeste": 45,
-                "Leste": 90,
-                "Sudeste": 135,
-                "Sul": 180,
-                "Sudoeste": 225,
-                "Oeste": 270,
-                "Noroeste": 315
-            };
-            let angulo = angulos[direcao] || 0;
-            document.getElementById('ponteiro').style.transform = `rotate(${angulo}deg)`;
-        }
-
-        function resetarMensagens() {
-            fetch('/reset', { method: 'POST' })
-                .then(() => atualizarMensagens());
-        }
-
-        setInterval(atualizarMensagens, 2000); // Atualiza a cada 2 segundos
-    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
@@ -58,5 +15,6 @@
         </div>
         <button class="botao" onclick="resetarMensagens()">Resetar Mensagens</button>
     </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
