@@ -25,8 +25,7 @@ function atualizarBussola(direcao) {
 }
 
 function resetarMensagens() {
-    fetch('/reset', { method: 'POST' })
-        .then(() => atualizarMensagens());
+    let angulos = { "Norte": 0}
 }
 
 setInterval(atualizarMensagens, 2000); // Atualiza a cada 2 segundos
