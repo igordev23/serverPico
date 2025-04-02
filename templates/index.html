@@ -16,5 +16,19 @@
         <button class="botao" onclick="resetarMensagens()">Resetar Bussola</button>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function resetarBussola() {
+    document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(0deg)`;
+}
+
+
+function resetarMensagens() {
+    fetch('/reset', { method: 'POST' })
+        .then(() => {
+            atualizarMensagens();
+            resetarBussola();
+        });
+}
+    </script>
 </body>
 </html>
