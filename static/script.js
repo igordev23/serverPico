@@ -2,11 +2,24 @@ function atualizarMensagens() {
     fetch('/mensagens')
         .then(response => response.json())
         .then(data => {
+            let mensagensDiv = document.getElementById('mensagens');
+            mensagensDiv.innerHTML = '';
             if (data.length > 0) {
-                let ultimaMensagem = data[data.length - 1]; // Pega a última mensagem
-                atualizarBussola(ultimaMensagem);
+                data.forEach(msg => {
+                    let div = document.createElement('div');
+                    div.className = 'mensagem';
+                    div.textContent = msg;
+                    mensagensDiv.appendChild(div);
+                });
+            } else {
+                mensagensDiv.innerHTML = '<p>Nenhuma mensagem recebida ainda.</p>';
             }
         });
+}
+
+function resetarMensagens() {
+    fetch('/reset', { method: 'POST' })
+        .then(() => atualizarMensagens());
 }
 
 function atualizarBussola(direcao) {
@@ -35,19 +48,4 @@ function mostrarSeção(selecao) {
     document.getElementById(selecao).style.display = 'block';
 }
 
-function atualizarLogs() {
-    fetch('/logs')
-        .then(response => response.json())
-        .then(data => {
-            let logsDiv = document.getElementById('logs');
-            logsDiv.innerHTML = '';
-            data.forEach(log => {
-                let p = document.createElement('p');
-                p.textContent = log;
-                logsDiv.appendChild(p);
-            });
-        });
-}
-
-setInterval(atualizarMensagens, 2000); // Atualiza a bússola a cada 2s
-setInterval(atualizarLogs, 2000); // Atualiza os logs a cada 2s
+setInterval(atualizarMensagens, 2000); // Atualiza os logs a cada 2s

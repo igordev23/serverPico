@@ -50,3 +50,11 @@ body {
 .hidden {
     display: none;
 }
+
+/* Estilização das mensagens recebidas */
+.mensagem {
+    background: #f4f4f4;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
