@@ -58,3 +58,11 @@ body {
     margin: 5px;
     border-radius: 5px;
 }
+#mensagens {
+    max-height: 300px; /* Define uma altura máxima */
+    overflow-y: auto;  /* Adiciona uma barra de rolagem quando necessário */
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: #f4f4f4;
+    text-align: left;
+}
