@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rosa dos Ventos</title>
+    <title>Monitoramento</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h2>Rosa dos Ventos</h2>
-        <div class="compass-container">
-            <div class="compass-background"></div>
-            <div id="ponteiro" class="needle"></div>
+        <h2>Monitoramento</h2>
+        
+        <button class="botao" onclick="mostrarSeção('compass-container')">Ver Bússola</button>
+        <button class="botao" onclick="mostrarSeção('logs-container')">Ver Logs</button>
+
+        <!-- Container da Bússola -->
+        <div id="compass-container" class="hidden">
+            <h3>Bússola</h3>
+            <div class="compass-container">
+                <div class="compass-background"></div>
+                <div id="ponteiro" class="needle"></div>
+            </div>
+            <button class="botao" onclick="resetarBussola()">Resetar Bússola</button>
         </div>
-        <button class="botao" onclick="resetarMensagens()">Resetar Bussola</button>
+
+        <!-- Container dos Logs -->
+        <div id="logs-container" class="hidden">
+            <h3>Logs de Temperatura e Botão</h3>
+            <div id="logs"></div>
+        </div>
     </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script>
-        function resetarBussola() {
-    document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(0deg)`;
-}
-
-
-function resetarMensagens() {
-    fetch('/reset', { method: 'POST' })
-        .then(() => {
-            atualizarMensagens();
-            resetarBussola();
-        });
-}
-    </script>
 </body>
 </html>
