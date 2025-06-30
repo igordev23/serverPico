@@ -22,28 +22,7 @@ function atualizarMensagens() {
         });
 }
 
-function atualizarBussola(direcao) {
-    let angulos = {
-        "Norte": 0,
-        "Nordeste": 45,
-        "Leste": 90,
-        "Sudeste": 135,
-        "Sul": 180,
-        "Sudoeste": 225,
-        "Oeste": 270,
-        "Noroeste": 315
-    };
-    
-    // Apenas atualiza a bússola se a direção recebida for válida
-    if (angulos.hasOwnProperty(direcao)) {
-        let angulo = angulos[direcao];
-        document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(${angulo}deg)`;
-    }
-}
 
-function resetarBussola() {
-    document.getElementById('ponteiro').style.transform = `translate(-50%, -100%) rotate(0deg)`;
-}
 
 function resetarMensagens() {
     fetch('/reset', { method: 'POST' })

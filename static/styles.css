@@ -33,33 +33,8 @@ body {
       border: 2px solid #4285F4;
     }
 
-    
 
-/* Estilização da bússola */
-.compass-container {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: auto;
-}
-.compass-background {
-    width: 100%;
-    height: 100%;
-    background-image: url('https://static.preparaenem.com/2023/03/representacao-grafica-de-uma-rosa-dos-ventos.jpg');
-    background-size: cover;
-    background-position: center;
-}
-.needle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    height: 80px;
-    background: red;
-    transform-origin: bottom center;
-    transform: translate(-50%, -100%) rotate(0deg);
-    transition: transform 0.5s ease-in-out;
-}
+
 
 /* Esconde elementos por padrão */
 .hidden {
