@@ -51,10 +51,14 @@ function resetarMensagens() {
 }
 
 function mostrarSeção(selecao) {
-    document.getElementById('compass-container').style.display = 'none';
-    document.getElementById('logs-container').style.display = 'none';
+    const seções = ['logs-container', 'map-container'];
+    seções.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
 
-    document.getElementById(selecao).style.display = 'block';
+    const ativa = document.getElementById(selecao);
+    if (ativa) ativa.classList.remove('hidden');
 }
 
 setInterval(atualizarMensagens, 2000); // Atualiza os logs a cada 2s
