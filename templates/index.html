@@ -12,7 +12,7 @@
   <div class="container">
     <h2>Monitoramento</h2>
     
-   >
+
     <button class="botao" onclick="mostrarSeção('logs-container')">Ver Logs</button>
     <button class="botao" onclick="mostrarMapa()">Ver Mapa GPS</button>
 
@@ -28,11 +28,11 @@
     </div>
 
     <!-- Container do Mapa -->
-    <div id="map-container">
-      <h3>Localização GPS em tempo real</h3>
-      <div id="map"></div>
-    </div>
-  </div>
+<div id="map-container" class="hidden">
+  <h3>Localização GPS em tempo real</h3>
+  <div id="map"></div>
+</div>
+
 
   <!-- Scripts -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>

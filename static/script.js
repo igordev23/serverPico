@@ -2,27 +2,21 @@ function atualizarMensagens() {
     fetch('/mensagens')
         .then(response => response.json())
         .then(data => {
-            let mensagensDiv = document.getElementById('mensagens');
+            const mensagensDiv = document.getElementById('mensagens');
             mensagensDiv.innerHTML = '';
 
             if (data.length > 0) {
                 data.forEach(msg => {
-                    let div = document.createElement('div');
+                    const div = document.createElement('div');
                     div.className = 'mensagem';
                     div.textContent = msg;
                     mensagensDiv.appendChild(div);
                 });
-
-                // Atualiza a bússola com a última mensagem recebida
-                let ultimaMensagem = data[data.length - 1];
-                atualizarBussola(ultimaMensagem);
             } else {
                 mensagensDiv.innerHTML = '<p>Nenhuma mensagem recebida ainda.</p>';
             }
         });
 }
-
-
 
 function resetarMensagens() {
     fetch('/reset', { method: 'POST' })
@@ -30,13 +24,18 @@ function resetarMensagens() {
 }
 
 function mostrarSeção(selecao) {
-    document.getElementById('compass-container').style.display = 'none';
-    document.getElementById('logs-container').style.display = 'none';
+    const seções = ['logs-container', 'map-container'];
+    seções.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
 
-    document.getElementById(selecao).style.display = 'block';
+    const ativa = document.getElementById(selecao);
+    if (ativa) ativa.classList.remove('hidden');
 }
+
 function mostrarMapa() {
-    document.getElementById('map-container').style.display = 'block';
+    mostrarSeção('map-container');
     if (!window.mapInicializado) {
         initMap();
         window.mapInicializado = true;
@@ -66,7 +65,7 @@ async function initMap() {
     let location = null;
     while (!location) {
         location = await getGPSData();
-        if (!location) await new Promise(r => setTimeout(r, 1000));
+        if (!location) await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
     map = new google.maps.Map(document.getElementById("map"), {
@@ -89,4 +88,5 @@ async function initMap() {
     }, 3000);
 }
 
-setInterval(atualizarMensagens, 2000); // Atualiza os logs a cada 2s
+// Atualiza os logs automaticamente
+setInterval(atualizarMensagens, 2000);
