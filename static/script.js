@@ -56,5 +56,58 @@ function mostrarSeção(selecao) {
 
     document.getElementById(selecao).style.display = 'block';
 }
+function mostrarMapa() {
+    document.getElementById('map-container').style.display = 'block';
+    if (!window.mapInicializado) {
+        initMap();
+        window.mapInicializado = true;
+    }
+}
+
+async function getGPSData() {
+    try {
+        const response = await fetch("/gps");
+        const data = await response.json();
+
+        const lat = parseFloat(data.latitude);
+        const lng = parseFloat(data.longitude);
+
+        if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+            return { lat, lng };
+        }
+    } catch (error) {
+        console.error("Erro ao buscar dados GPS:", error);
+    }
+    return null;
+}
+
+let map, marker;
+
+async function initMap() {
+    let location = null;
+    while (!location) {
+        location = await getGPSData();
+        if (!location) await new Promise(r => setTimeout(r, 1000));
+    }
+
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: location,
+        zoom: 17,
+    });
+
+    marker = new google.maps.Marker({
+        position: location,
+        map,
+        title: "Localização Atual",
+    });
+
+    setInterval(async () => {
+        const newLocation = await getGPSData();
+        if (newLocation) {
+            marker.setPosition(newLocation);
+            map.setCenter(newLocation);
+        }
+    }, 3000);
+}
 
 setInterval(atualizarMensagens, 2000); // Atualiza os logs a cada 2s
